@@ -10,9 +10,9 @@ import SwiftUI
 struct ContentView: View {
     @State var inputString: String = ""
     @State var name: String = ""
-    @State var empi: String = ""
-    @State var reasonForVisit: String = ""
-    @State var procedure: String = ""
+    @State var dateOfBirth: String = ""
+    @State var studyDate: String = ""
+    @State var accessionNumber: String = ""
     @State var testoutput = [String]()
     @State var specificDataOutput = [String]()
     var body: some View {
@@ -23,6 +23,7 @@ struct ContentView: View {
                     Button(action: {
                         testoutput = processInput(input: inputString)
                         specificDataOutput = getSpecificData(input: inputString)
+                        assignValues(input: specificDataOutput)
                     }, label: {
                         Text("Process")
                     })
@@ -95,15 +96,19 @@ struct ContentView: View {
         var filteredArray = [String]()
         let targetSubstring: [String] = ["Name", "Birth", "Study", "Accession"]
         
-        // Separate by Line Breaks
-        var components = input.components(separatedBy: "\n")
-        // Remove Empty Elements
-        components = components.filter(){$0 != ""}
-        
+        let components = divideLineBreaks(input: input)
         filteredArray = targetCategory(input: components, targets: targetSubstring)
         outputArray = removeCategory(input: filteredArray)
         
         return outputArray
+    }
+    
+    private func divideLineBreaks(input: String) -> [String] {
+        // Separate by Line Breaks
+        var components = input.components(separatedBy: "\n")
+        // Remove Empty Elements
+        components = components.filter(){$0 != ""}
+        return components
     }
     
     private func targetCategory(input: [String], targets: [String]) -> [String] {
@@ -130,6 +135,13 @@ struct ContentView: View {
             }
         }
         return outputArray
+    }
+    
+    func assignValues(input: [String]) {
+        name = input[0]
+        dateOfBirth = input[1]
+        studyDate = input[2]
+        accessionNumber = input[3]
     }
 }
 
