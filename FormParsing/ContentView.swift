@@ -88,36 +88,33 @@ struct ContentView: View {
         }
         return outputArray
     }
+    
+    
     func getSpecificData(input: String) -> [String] {
         var outputArray = [String]()
         var filteredArray = [String]()
+        let targetSubstring: [String] = ["Name", "Birth", "Study", "Accession"]
+        
         // Separate by Line Breaks
         var components = input.components(separatedBy: "\n")
         // Remove Empty Elements
         components = components.filter(){$0 != ""}
         
-        let targetSubstring: [String] = ["Name", "Birth", "Study", "Accession"]
-        for target in targetSubstring {
-            // Cycle through array of targets
-            for component in components {
-                // Cycle through the divided input array
-                if component.contains(target) {
-                    filteredArray.append(component)
+        filteredArray = targetCategory(input: components, targets: targetSubstring)
+        outputArray = removeCategory(input: filteredArray)
+        
+        return outputArray
+    }
+    
+    private func targetCategory(input: [String], targets: [String]) -> [String] {
+        var outputArray = [String]()
+        for target in targets {
+            for element in input {
+                if element.contains(target) {
+                    outputArray.append(element)
                 }
             }
         }
-        
-        //
-        for item in filteredArray {
-            if item.contains(": ") {
-                var stringArray = item.components(separatedBy: ": ")
-                _ = stringArray.removeFirst()
-                let outputString = stringArray.joined(separator: "")
-                outputArray.append(outputString)
-            }
-        }
-        
-        
         return outputArray
     }
     
@@ -135,6 +132,8 @@ struct ContentView: View {
         return outputArray
     }
 }
+
+
 extension String {
     var mentionedUsernames: [String] {
         let parts = split(separator: "@").dropFirst()
