@@ -36,7 +36,7 @@ struct ContentView: View {
         }
     }
     
-    func processInput(input: String) -> [String] {
+    func processInputTest(input: String) -> [String] {
         var outputArray = [String]()
         var components = input.components(separatedBy: "\n")
         components = components.filter(){$0 != ""}
@@ -51,7 +51,24 @@ struct ContentView: View {
                 outputArray.append(outputString)
             } else {
                 outputArray.append("Does Not Contain Info")
-//                append(contentsOf: "No ': ' Present")
+            }
+        }
+        return outputArray
+    }
+    func processInput(input: String) -> [String] {
+        var outputArray = [String]()
+        var components = input.components(separatedBy: "\n")
+        components = components.filter(){$0 != ""}
+        
+        for component in components {
+//            outputArray.append(component)
+            if component.contains(": ") {
+                var stringArray = component.components(separatedBy: ": ")
+                let category = stringArray.removeFirst()
+                let outputString = stringArray.joined(separator: "")
+                outputArray.append(outputString)
+            } else {
+//                outputArray.append("Does Not Contain Info")
             }
         }
         return outputArray
