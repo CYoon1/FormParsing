@@ -36,8 +36,8 @@ struct ContentView: View {
     }
     
     func processInput(input: String) -> [String] {
-        let components = input.components(separatedBy: "\n")
-        
+        var components = input.components(separatedBy: "\n")
+        components = components.filter(){$0 != ""}
         return components
     }
 }
