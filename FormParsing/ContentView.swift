@@ -9,9 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     @State var inputString: String = ""
-    @State var firstName: String = ""
+    @State var name: String = ""
     @State var empi: String = ""
     @State var reasonForVisit: String = ""
+    @State var procedure: String = ""
     @State var testoutput: [String] = []
     var body: some View {
         VStack {
@@ -36,9 +37,24 @@ struct ContentView: View {
     }
     
     func processInput(input: String) -> [String] {
+        var outputArray = [String]()
         var components = input.components(separatedBy: "\n")
         components = components.filter(){$0 != ""}
-        return components
+        
+        for component in components {
+            outputArray.append(component)
+            if component.contains(": ") {
+                var stringArray = component.components(separatedBy: ": ")
+                let category = stringArray.removeFirst()
+                let outputString = stringArray.joined(separator: "")
+                outputArray.append("Category: \(category)")
+                outputArray.append(outputString)
+            } else {
+                outputArray.append("Does Not Contain Info")
+//                append(contentsOf: "No ': ' Present")
+            }
+        }
+        return outputArray
     }
 }
 extension String {
